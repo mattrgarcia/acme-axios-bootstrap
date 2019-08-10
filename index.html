@@ -9,12 +9,12 @@
       <ul class='nav nav-tabs'>
         <li class='nav-item'>
           <a class='nav-link' id='companiesLink' href='#companies'>
-            Companies
+
           </a>
         </li>
         <li class='nav-item'>
             <a class='nav-link' id='productsLink' href='#products'>
-              Products
+
             </a>
           </li>
       </ul>
@@ -37,13 +37,18 @@
         const response = await axios.get(`https://acme-users-api-rev.herokuapp.com/api/${name}`);
         const data = response.data;
         title.innerHTML = name.charAt(0).toUpperCase() + name.slice(1);
-
+        const companiesData = await axios.get(`https://acme-users-api-rev.herokuapp.com/api/companies`);
+        const productsData = await axios.get(`https://acme-users-api-rev.herokuapp.com/api/products`);
+        const numberComp = companiesData.data
+        numberOfCompanies.innerHTML = `Companies (${numberComp.length})`
+        const numberProd = productsData.data
+        numberOfProducts.innerHTML = `Products (${numberProd.length})`
           if(name === 'companies'){
             renderCompanies(data);
-            numberOfCompanies.innerHTML += `(${data.length})`
+
           } else {
         renderProducts(data);
-        numberOfProducts.innerHTML += `(${data.length})`
+
           }
       };
 
