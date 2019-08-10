@@ -1,8 +1,65 @@
 <html>
   <head>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.js'></script>
+    <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' />
   </head>
   <body>
+    <div class='container'>
+      <h1>Acme w/ Bootstrap and Axios VJS</h1>
+      <ul class='nav nav-tabs'>
+        <li class='nav-item'>
+          <a class='nav-link' id='companiesLink' href='#companies'>
+            Companies
+          </a>
+        </li>
+        <li class='nav-item'>
+            <a class='nav-link' id='productsLink' href='#products'>
+              Products
+            </a>
+          </li>
+      </ul>
+      <h2 id='title'></h2>
+      <div id='results'>
+        <table id='table'>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>State</th>
+            <th>CatchPhrase</th>
+            <th>CreatedAt</th>
+          </tr>
+        </table>
+      </div>
+    </div>
     <script>
+      const results = document.querySelector('#results');
+      const table = document.querySelector('#table');
+
+      const loadData = async ()=> {
+        const response = await axios.get('https://acme-users-api-rev.herokuapp.com/api/companies');
+        const companies = response.data;
+        render(companies);
+      };
+
+      const render = (companies)=> {
+        let html = companies.map(company=>
+         `
+          <tr>
+            <td>${company.id}</td>
+            <td>${company.name}</td>
+            <td>${company.phone}</td>
+            <td>${company.state}</td>
+            <td>${company.catchPhrase}</td>
+            <td>${company.createdAt}</td>
+          </tr>
+          `
+           ).join('');
+           console.log(html);
+        table.innerHTML += html;
+      };
+
+      loadData();
     </script>
   </body>
 </html>
