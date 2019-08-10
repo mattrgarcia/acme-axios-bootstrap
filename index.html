@@ -21,30 +21,35 @@
       <h2 id='title'></h2>
       <div id='results'>
         <table id='table'>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Phone</th>
-            <th>State</th>
-            <th>CatchPhrase</th>
-            <th>CreatedAt</th>
-          </tr>
+
         </table>
       </div>
     </div>
     <script>
       const results = document.querySelector('#results');
       const table = document.querySelector('#table');
+      // const nav = document.querySelector('.nav')
+      // let name = ''
+      // nav.addEventListener('click', ev => {
+      //   name = ev.target.innerText.toLowerCase()
+      // })
 
       const loadData = async ()=> {
-        const response = await axios.get('https://acme-users-api-rev.herokuapp.com/api/companies');
+        if(!name){
+          name = 'companies'
+        }
+        const response = await axios.get(`https://acme-users-api-rev.herokuapp.com/api/${name}`);
         const companies = response.data;
+
         render(companies);
       };
+
+
 
       const render = (companies)=> {
         let html = companies.map(company=>
          `
+
           <tr>
             <td>${company.id}</td>
             <td>${company.name}</td>
@@ -56,7 +61,14 @@
           `
            ).join('');
            console.log(html);
-        table.innerHTML += html;
+        table.innerHTML += `<tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>State</th>
+            <th>CatchPhrase</th>
+            <th>CreatedAt</th>
+          </tr>` + html;
       };
 
       loadData();
