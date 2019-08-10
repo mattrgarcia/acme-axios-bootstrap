@@ -35,21 +35,27 @@
       // })
 
       const loadData = async ()=> {
-        if(!name){
-          name = 'companies'
-        }
+        const name = window.location.hash.slice(1);
+        console.log(name);
+        // if(!name){
+        //   name = 'companies'
+        // }
         const response = await axios.get(`https://acme-users-api-rev.herokuapp.com/api/${name}`);
-        const companies = response.data;
-
-        render(companies);
+        const data = response.data;
+          if(name === 'companies'){
+            renderCompanies(data);
+          } else {
+        renderProducts(data);
+          }
       };
 
 
 
-      const render = (companies)=> {
-        let html = companies.map(company=>
-         `
+      const renderCompanies = (data)=> {
+        table.innerHTML = '';
+        let html = data.map(company=>
 
+         `
           <tr>
             <td>${company.id}</td>
             <td>${company.name}</td>
@@ -60,7 +66,6 @@
           </tr>
           `
            ).join('');
-           console.log(html);
         table.innerHTML += `<tr>
             <th>ID</th>
             <th>Name</th>
@@ -71,6 +76,34 @@
           </tr>` + html;
       };
 
+      const renderProducts = (data)=> {
+        table.innerHTML = '';
+        let html = data.map(product=>
+         `
+
+          <tr>
+            <td>${product.id}</td>
+            <td>${product.name}</td>
+            <td>${product.description}</td>
+            <td>${product.suggestedPrice}</td>
+            <td>${product.createdAt}</td>
+            <td>${product.updatedAt}</td>
+          </tr>
+          `
+           ).join('');
+        table.innerHTML += `<tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Descrition</th>
+            <th>SuggestedPrice</th>
+            <th>CreatedAt</th>
+            <th>UpdatedAt</th>
+          </tr>` + html;
+      };
+
+      window.addEventListener('hashchange', ()=> {
+        loadData();
+      })
       loadData();
     </script>
   </body>
